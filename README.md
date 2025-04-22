@@ -105,7 +105,6 @@ L'app React partirà su `http://localhost:3000`.
 
 - La console di amministrazione di Keycloak è accessibile su `https://localhost:8443/admin` con username `admin` e password `admin`.
 - Puoi gestire utenti, ruoli e client dalla console di amministrazione di Keycloak.
-- La configurazione del realm e del client è importata automaticamente da `keycloak/realm-export.json`.
 
 ---
 
