@@ -74,7 +74,7 @@ npm install;
 npm start
 ```
 
-Il server backend partirà sulla porta 4000.
+Il server backend runnerà sulla porta 4000.
 
 ### 4. Configurazione Frontend
 
