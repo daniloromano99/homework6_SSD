@@ -1,57 +1,20 @@
-# Full-Stack React + Node.js Keycloak Web Application
+# Applicazione Web Full-Stack React + Node.js con Keycloak
 
-## Overview
+## Panoramica
 
-This project is a full-stack web application with React frontend and Node.js Express backend integrated with Keycloak for authentication using OpenID Connect. The frontend uses `react-keycloak`, the backend uses `keycloak-connect` middleware. Keycloak is deployed using Docker with HTTPS and self-signed certificates for local development.
+Questo progetto è un'applicazione web full-stack con frontend React e backend Node.js Express integrati con Keycloak per l'autenticazione tramite OpenID Connect. Il frontend utilizza `react-keycloak`, il backend utilizza il middleware `keycloak-connect`. Keycloak è distribuito usando Docker con HTTPS e certificati autofirmati per lo sviluppo locale.
 
-The app supports role-based access control with two roles: `admin` and `user`. Admins can access both admin and user resources, while users can only access user resources.
+L'app supporta il controllo degli accessi basato sui ruoli con due ruoli: `admin` e `user`. Gli admin possono accedere sia alle risorse admin che a quelle user, mentre gli utenti possono accedere solo alle risorse user.
 
-Material-UI is used for UI components in the frontend. The backend validates tokens for API requests and protects routes accordingly.
+Material-UI è utilizzato per i componenti UI nel frontend. Il backend valida i token per le richieste API e protegge le rotte di conseguenza.
 
----
 
-## Project Structure
 
-```
-tentativo/
-├── backend/
-│   ├── package.json
-│   ├── server.js
-│   ├── keycloak-config.js
-│   ├── routes/
-│   │   ├── admin.js
-│   │   └── user.js
-│   └── middleware/
-│       └── keycloak-auth.js
-├── frontend/
-│   ├── package.json
-│   ├── public/
-│   │   └── index.html
-│   └── src/
-│       ├── index.js
-│       ├── App.js
-│       ├── keycloak.js
-│       ├── components/
-│       │   ├── AdminResources.js
-│       │   ├── UserResources.js
-│       │   └── ProtectedRoute.js
-│       └── theme.js
-├── keycloak/
-│   ├── docker-compose.yml
-│   ├── certs/
-│   │   ├── keycloak.crt
-│   │   └── keycloak.key
-│   └── realm-export.json
-├── README.md
-```
+## Istruzioni per l'Installazione e l'Esecuzione
 
----
+### 1. Generare Certificati Autofirmati per HTTPS di Keycloak
 
-## Setup and Execution Instructions
-
-### 1. Generate Self-Signed Certificates for Keycloak HTTPS
-
-Navigate to the `keycloak/certs/` directory (create it if it doesn't exist), then run the following commands to generate the self-signed certificates with Subject Alternative Name (SAN) for localhost:
+Navigare nella directory `keycloak/certs/` (crearla se non esiste), quindi eseguire i seguenti comandi per generare i certificati autofirmati con Subject Alternative Name (SAN) per localhost:
 
 ```bash
 openssl genrsa -out keycloak.key 2048;
@@ -59,11 +22,11 @@ openssl req -new -key keycloak.key -out keycloak.csr -config openssl.cnf;
 openssl x509 -req -in keycloak.csr -signkey keycloak.key -out keycloak.crt -extensions req_ext -extfile openssl.cnf -days 365
 ```
 
-This will generate `keycloak.key` and `keycloak.crt` files with SAN for localhost needed for HTTPS.
+Questo genererà i file `keycloak.key` e `keycloak.crt` con SAN per localhost necessari per HTTPS.
 
-### 2. Generate Java Keystore (JKS) for Keycloak HTTPS
+### 2. Generare il Java Keystore (JKS) per HTTPS di Keycloak
 
-Keycloak requires a Java keystore (JKS) file for HTTPS. Run the following script from the `keycloak/` directory to generate the keystore:
+Keycloak richiede un file Java keystore (JKS) per HTTPS. Eseguire lo script seguente dalla directory `keycloak/` per generare il keystore:
 
 ```bash
 cd keycloak
@@ -72,41 +35,38 @@ chmod +x generate-keystore.sh
 cd ..
 ```
 
-This script converts the PEM certificate and key into a JKS keystore file `certs/tls.jks` with password `changeit`.
+Questo script converte il certificato PEM e la chiave in un file keystore JKS `certs/tls.jks` con password `changeit`.
 
-### 3. Start Keycloak Server with Docker
+### 3. Avviare il Server Keycloak con Docker
 
-From the root project directory, run:
+Dalla directory principale del progetto, eseguire:
 
 ```bash
 docker-compose -f keycloak/docker-compose.yml up -d
 ```
 
-This will start Keycloak on `https://localhost:8443` with the realm and client configured.
+Questo avvierà Keycloak su `https://localhost:8443` con il realm e il client configurati.
 
-### 4. (Optional) Automatically Trust Self-Signed Certificate on Windows
+### 4. Fidarsi Automaticamente del Certificato Autofirmato su Windows
 
-To avoid browser warnings about the self-signed certificate, you can run the provided PowerShell script to install the certificate into the Windows Trusted Root Certification Authorities store.
+Per evitare avvisi del browser riguardo al certificato autofirmato, è possibile eseguire lo script PowerShell fornito per installare il certificato nello store delle Autorità di Certificazione Radice attendibili di Windows.
 
-Run the following commands in an elevated PowerShell prompt:
+Eseguire i seguenti comandi in una finestra PowerShell con privilegi elevati:
 
 ```powershell(amministratore)
 cd keycloak
 .\install-cert.ps1
 cd..
  keytool -importcert -file keycloak/certs/keycloak.crt -alias keycloak -keystore keycloak/certs/tls.jks -storepass changeit -noprompt
-
 ```
 
-You may need to restart your browser after running the script for the changes to take effect.
+Potrebbe essere necessario riavviare il browser dopo aver eseguito lo script affinché le modifiche abbiano effetto.
 
-If you are on a different OS, you will need to manually add the certificate to your system's trusted certificates.
+Se si utilizza un sistema operativo diverso, sarà necessario aggiungere manualmente il certificato ai certificati attendibili del sistema.
 
+### 3. Configurazione Backend
 
-
-### 3. Backend Setup
-
-Navigate to the `backend/` directory:
+Navigare nella directory `backend/`:
 
 ```bash
 cd backend;
@@ -114,11 +74,11 @@ npm install;
 npm start
 ```
 
-The backend server will start on port 4000.
+Il server backend partirà sulla porta 4000.
 
-### 4. Frontend Setup
+### 4. Configurazione Frontend
 
-Navigate to the `frontend/` directory:
+Navigare nella directory `frontend/`:
 
 ```bash
 cd frontend;
@@ -126,27 +86,27 @@ npm install;
 npm start
 ```
 
-The React app will start on `http://localhost:3000`.
+L'app React partirà su `http://localhost:3000`.
 
 ---
 
-## Usage
+## Utilizzo
 
-- Access the frontend at `http://localhost:3000`.
-- You will be redirected to Keycloak login.
-- After login:
-  - If you have the `admin` role, you can access `/admin` and `/user` routes.
-  - If you have the `user` role, you can access only `/user` route.
-- Use the logout button in the app bar to log out.
-
----
-
-## Notes
-
-- The Keycloak admin console is accessible at `https://localhost:8443/admin` with username `admin` and password `admin`.
-- You can manage users, roles, and clients from the Keycloak admin console.
-- The realm and client configuration is imported automatically from `keycloak/realm-export.json`.
+- Accedere al frontend su `http://localhost:3000`.
+- Verrai reindirizzato al login di Keycloak.
+- Dopo il login:
+  - Se hai il ruolo `admin`, puoi accedere alle rotte `/admin` e `/user`.
+  - Se hai il ruolo `user`, puoi accedere solo alla rotta `/user`.
+- Usa il pulsante di logout nella barra dell'app per uscire.
 
 ---
 
-This completes the setup and execution process for the full-stack Keycloak integrated web application.
+## Note
+
+- La console di amministrazione di Keycloak è accessibile su `https://localhost:8443/admin` con username `admin` e password `admin`.
+- Puoi gestire utenti, ruoli e client dalla console di amministrazione di Keycloak.
+- La configurazione del realm e del client è importata automaticamente da `keycloak/realm-export.json`.
+
+---
+
+Questa conclude il processo di installazione ed esecuzione per l'applicazione web full-stack integrata con Keycloak.

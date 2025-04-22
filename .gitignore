@@ -1,1 +1,3 @@
 node_modules
+keycloak/certs/*
+!keycloak/certs/openssl.cnf
