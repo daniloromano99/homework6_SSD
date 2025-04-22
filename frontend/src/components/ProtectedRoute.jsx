@@ -25,7 +25,34 @@ const ProtectedRoute = ({ children, roles }) => {
 
   // Se l’utente non ha i ruoli giusti -> accesso negato
   if (!hasRequiredRole) {
-    return <div>Access Denied</div>;
+    return (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '60vh',
+        color: '#b00020',
+        fontSize: '2.5rem',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: '20px',
+        backgroundColor: '#ffe6e6',
+        borderRadius: '10px',
+        margin: '40px',
+        boxShadow: '0 4px 8px rgba(176, 0, 32, 0.3)'
+      }}>
+        Accesso Negato
+        <p style={{
+          fontSize: '1.25rem',
+          fontWeight: 'normal',
+          marginTop: '15px',
+          color: '#660014'
+        }}>
+          Non hai i permessi per accedere a questa pagina.
+        </p>
+      </div>
+    );
   }
 
   // Altrimenti, mostra i contenuti protetti
