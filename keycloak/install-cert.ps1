@@ -1,14 +1,14 @@
-# PowerShell script to install the self-signed certificate into Trusted Root Certification Authorities
-# Run this script as Administrator to avoid access denied errors
+# Script PowerShell per installare il certificato autofirmato nelle Autorità di certificazione radice attendibili
+# Eseguire questo script come Amministratore per evitare errori di accesso negato
 
 $certPath = "$PSScriptRoot\certs\keycloak.crt"
 
 if (-Not (Test-Path $certPath)) {
-    Write-Error "Certificate file not found at $certPath"
+    Write-Error "File del certificato non trovato in $certPath"
     exit 1
 }
 
-Write-Output "Installing certificate from $certPath to Trusted Root Certification Authorities..."
+Write-Output "Installazione del certificato da $certPath nelle Autorità di certificazione radice attendibili..."
 
 try {
     $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
@@ -19,8 +19,8 @@ try {
     $store.Add($cert)
     $store.Close()
 
-    Write-Output "Certificate installed successfully. You may need to restart your browser."
+    Write-Output "Certificato installato con successo. Potrebbe essere necessario riavviare il browser."
 } catch {
-    Write-Error "Failed to install certificate. Please run this script as Administrator."
+    Write-Error "Installazione del certificato fallita. Eseguire questo script come Amministratore."
     exit 1
 }

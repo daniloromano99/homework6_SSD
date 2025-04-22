@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Generate PKCS12 keystore from PEM certificate and key
+# Genera il PKCS12 keystore 
 openssl pkcs12 -export \
   -in certs/keycloak.crt \
   -inkey certs/keycloak.key \
@@ -8,7 +8,7 @@ openssl pkcs12 -export \
   -name tls \
   -password pass:changeit
 
-# Import PKCS12 keystore into JKS keystore
+# Converte il PKCS12 keystore in JKS
 keytool -importkeystore \
   -deststorepass changeit \
   -destkeypass changeit \

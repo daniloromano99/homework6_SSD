@@ -18,7 +18,7 @@ root.render(
     authClient={keycloak}
     onEvent={eventLogger}
     onTokens={tokenLogger}
-    initOptions={{ onLoad: 'login-required', checkLoginIframe: false }} // Disable iframe check for testing
+    initOptions={{ onLoad: 'login-required', checkLoginIframe: false }} // Disabilita il check iframe check per il testing
   >
     <App />
   </ReactKeycloakProvider>
