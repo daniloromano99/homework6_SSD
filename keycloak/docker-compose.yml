@@ -1,0 +1,21 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - QUARKUS_HTTP_HOST_STRICT=false
+      - QUARKUS_HTTP_HOST=localhost
+    command: start --https-key-store-file=/etc/x509/https/tls.jks \
+                   --https-key-store-password=changeit \
+                   --http-host=0.0.0.0 \
+                   --hostname-strict=false
+    ports:
+      - 8443:8443
+    volumes:
+      - ./certs:/etc/x509/https
+      - keycloak_data:/opt/keycloak/data     # <-- aggiunto per la persistenza
+    restart: unless-stopped
+
+volumes:
+  keycloak_data:      # <-- definizione del volume persistente
