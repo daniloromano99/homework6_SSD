@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const keycloakConfig = require('./keycloak-config');
 const adminRoutes = require('./routes/admin');
 const userRoutes = require('./routes/user');
-const { checkRole } = require('./middleware/keycloak-auth');
+const { checkJwt, checkRole } = require('./middleware/auth-keycloak');
 
 const app = express();
 const memoryStore = new session.MemoryStore();
@@ -32,8 +32,8 @@ app.use(session({
 const keycloak = new Keycloak({ store: memoryStore }, keycloakConfig);
 app.use(keycloak.middleware());
 
-app.use('/admin', keycloak.protect(), checkRole('admin'), adminRoutes);
-app.use('/user', keycloak.protect(), checkRole(['user', 'admin']), userRoutes);
+app.use('/admin', checkJwt, checkRole('admin'), adminRoutes);
+app.use('/user', checkJwt, checkRole(['user', 'admin']), userRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);

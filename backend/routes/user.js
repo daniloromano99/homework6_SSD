@@ -1,5 +1,5 @@
 const express = require('express');
-const { checkJwt, checkRole } = require('../middleware/auth');
+const { checkJwt, checkRole } = require('../middleware/auth-keycloak');
 const router = express.Router();
 
 // Applica il middleware per verificare l'autenticazione e il ruolo
