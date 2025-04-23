@@ -24,20 +24,8 @@ openssl x509 -req -in keycloak.csr -signkey keycloak.key -out keycloak.crt -exte
 
 Questo genererà i file `keycloak.key` e `keycloak.crt` con SAN per localhost necessari per HTTPS.
 
-### 2. Generare il Java Keystore (JKS) per HTTPS di Keycloak
 
-Keycloak richiede un file Java keystore (JKS) per HTTPS. Eseguire lo script seguente dalla directory `keycloak/` per generare il keystore:
-
-```bash
-cd keycloak
-chmod +x generate-keystore.sh
-./generate-keystore.sh
-cd ..
-```
-
-Questo script converte il certificato PEM e la chiave in un file keystore JKS `certs/tls.jks` con password `changeit`.
-
-### 3. Avviare il Server Keycloak con Docker
+### 2. Avviare il Server Keycloak con Docker
 
 Dalla directory principale del progetto, eseguire:
 
@@ -47,7 +35,7 @@ docker-compose -f keycloak/docker-compose.yml up -d
 
 Questo avvierà Keycloak su `https://localhost:8443` con il realm e il client configurati.
 
-### 4. Fidarsi Automaticamente del Certificato Autofirmato su Windows
+### 3. Fidarsi Automaticamente del Certificato Autofirmato su Windows
 
 Per evitare avvisi del browser riguardo al certificato autofirmato, è possibile eseguire lo script PowerShell fornito per installare il certificato nello store delle Autorità di Certificazione Radice attendibili di Windows.
 
@@ -56,15 +44,14 @@ Eseguire i seguenti comandi in una finestra PowerShell con privilegi elevati:
 ```powershell(amministratore)
 cd keycloak
 .\install-cert.ps1
-cd..
- keytool -importcert -file keycloak/certs/keycloak.crt -alias keycloak -keystore keycloak/certs/tls.jks -storepass changeit -noprompt
+
 ```
 
 Potrebbe essere necessario riavviare il browser dopo aver eseguito lo script affinché le modifiche abbiano effetto.
 
 Se si utilizza un sistema operativo diverso, sarà necessario aggiungere manualmente il certificato ai certificati attendibili del sistema.
 
-### 3. Configurazione Backend
+### 4. Configurazione Backend
 
 Navigare nella directory `backend/`:
 
@@ -76,7 +63,7 @@ npm start
 
 Il server backend runnerà sulla porta 4000.
 
-### 4. Configurazione Frontend
+### 5. Configurazione Frontend
 
 Navigare nella directory `frontend/`:
 
