@@ -23,7 +23,7 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 app.use(session({
-  secret: 'some secret',
+  secret: 'some secret', //valore di esempio si dovrebbe usare una stringa complessa
   resave: false,
   saveUninitialized: true,
   store: memoryStore,
