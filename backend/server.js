@@ -26,7 +26,12 @@ app.use(session({
   secret: 'some secret',
   resave: false,
   saveUninitialized: true,
-  store: memoryStore
+  store: memoryStore,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax'
+  }
 }));
 
 const keycloak = new Keycloak({ store: memoryStore }, keycloakConfig);
