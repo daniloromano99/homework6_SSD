@@ -12,7 +12,6 @@ const app = express();
 const memoryStore = new session.MemoryStore();
 
 //Impostiamo CSP
-
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "frame-ancestors 'self' https://localhost:8443");
   next();
@@ -23,12 +22,9 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true //Consenti l'invio di cookie con le richieste
 }));
-
 //Usiamo bodyParser per analizzare il corpo delle richieste HTTP
 app.use(bodyParser.json());
-
 //Configuriamo le sessioni degli utenti
-
 app.use(session({
   secret: 'some secret', // La chiave segreta per firmare la sessione (da cambiare con una stringa complessa)
   resave: false, // Non rinnovare la sessione se non cambia
