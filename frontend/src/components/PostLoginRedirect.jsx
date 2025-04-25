@@ -19,9 +19,7 @@ const PostLoginRedirect = () => {
         setTimeout(() => navigate('/admin'), 0);
       } else if (userRoles.includes('user')) {
         setTimeout(() => navigate('/user'), 0);
-      } else {
-        navigate('/unauthorized');
-      }
+      } 
     } else {
       keycloak.login({ redirectUri: window.location.origin });
     }
