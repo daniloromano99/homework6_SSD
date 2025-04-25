@@ -11,22 +11,29 @@ const { checkJwt, checkRole } = require('./middleware/auth-keycloak');
 const app = express();
 const memoryStore = new session.MemoryStore();
 
-// Set Content Security Policy
+//Impostiamo CSP
+
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "frame-ancestors 'self' https://localhost:8443");
   next();
 });
 
+//Configurazione di CORS per permettere al frontend (localhost:3000) di fare richieste backend
 app.use(cors({
   origin: 'http://localhost:3000',
-  credentials: true
+  credentials: true //Consenti l'invio di cookie con le richieste
 }));
+
+//Usiamo bodyParser per analizzare il corpo delle richieste HTTP
 app.use(bodyParser.json());
+
+//Configuriamo le sessioni degli utenti
+
 app.use(session({
-  secret: 'some secret', //valore di esempio si dovrebbe usare una stringa complessa
-  resave: false,
-  saveUninitialized: true,
-  store: memoryStore,
+  secret: 'some secret', // La chiave segreta per firmare la sessione (da cambiare con una stringa complessa)
+  resave: false, // Non rinnovare la sessione se non cambia
+  saveUninitialized: true, // Salva le sessioni non inizializzate
+  store: MemoryStore , // Utilizza la memoria per conservare le sessioni
   cookie: {
     httpOnly: true,
     secure: false,
