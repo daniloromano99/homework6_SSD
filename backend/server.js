@@ -29,7 +29,7 @@ app.use(session({
   secret: 'some secret', // La chiave segreta per firmare la sessione (da cambiare con una stringa complessa)
   resave: false, // Non rinnovare la sessione se non cambia
   saveUninitialized: true, // Salva le sessioni non inizializzate
-  store: MemoryStore , // Utilizza la memoria per conservare le sessioni
+  store: memoryStore, // Utilizza la memoria per conservare le sessioni
   cookie: {
     httpOnly: true,
     secure: false,
